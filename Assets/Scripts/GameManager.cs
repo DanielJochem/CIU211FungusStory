@@ -20,6 +20,10 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public string playerName = "PLAYER", friendName = "FRIEND", chosenCharacterPlayer = "PJoanne", chosenCharacterFriend = "FSherlock", playerGender = "Female", friendGender = "Male";
 
+    public GameObject player, friend;
+
+    public List<Sprite> johnPortraits, sherlockPortraits, joannePortraits, sherleyPortraits;
+
     // Use this for initialization
     void Start() {
         ChangeBackground();
@@ -37,6 +41,36 @@ public class GameManager : SingletonBehaviour<GameManager>
         flowchart.SetStringVariable("friendName", friendName);
         flowchart.SetStringVariable("playerGender", playerGender);
         flowchart.SetStringVariable("friendGender", friendGender);
+
+        switch(chosenCharacterPlayer) {
+            case "PJohn":
+                player.GetComponent<Character>().portraits = johnPortraits;
+                break;
+            case "PSherlock":
+                player.GetComponent<Character>().portraits = sherlockPortraits;
+                break;
+            case "PJoanne":
+                player.GetComponent<Character>().portraits = joannePortraits;
+                break;
+            case "PSherley":
+                player.GetComponent<Character>().portraits = sherleyPortraits;
+                break;
+        }
+
+        switch(chosenCharacterFriend) {
+            case "PJohn":
+                friend.GetComponent<Character>().portraits = johnPortraits;
+                break;
+            case "PSherlock":
+                friend.GetComponent<Character>().portraits = sherlockPortraits;
+                break;
+            case "PJoanne":
+                friend.GetComponent<Character>().portraits = joannePortraits;
+                break;
+            case "PSherley":
+                friend.GetComponent<Character>().portraits = sherleyPortraits;
+                break;
+        }
     }
 	
 	// Update is called once per frame
