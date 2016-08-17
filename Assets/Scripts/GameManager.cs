@@ -18,11 +18,13 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public GameObject background;
 
-    public string playerName = "PLAYER", friendName = "FRIEND", chosenCharacterPlayer = "PJoanne", chosenCharacterFriend = "FSherlock", playerGender = "Female", friendGender = "Male";
+    public string playerName = "PLAYER", friendName = "FRIEND", chosenCharacterStart = "PSherley", chosenCharacterPlayer = "PSherley", chosenCharacterFriend = "FSherlock", playerGender = "Female", friendGender = "Male";
 
-    public GameObject player, friend;
+    public GameObject start, player, friend;
 
-    public List<Sprite> johnPortraits, sherlockPortraits, joannePortraits, sherleyPortraits;
+    public List<Sprite> sJohnPortraits, sSherlockPortraits, sJoannePortraits, sSherleyPortraits;
+    public List<Sprite> pJohnPortraits, pSherlockPortraits, pJoannePortraits, pSherleyPortraits;
+    public List<Sprite> fJohnPortraits, fSherlockPortraits, fJoannePortraits, fSherleyPortraits;
 
     // Use this for initialization
     void Start() {
@@ -31,6 +33,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         playerName = CharacterInfo.Instance.chosenPlayerName;
         friendName = CharacterInfo.Instance.chosenFriendName;
 
+        chosenCharacterStart = CharacterInfo.Instance.chosenPlayerCharacter;
         chosenCharacterPlayer = CharacterInfo.Instance.chosenPlayerCharacter;
         chosenCharacterFriend = CharacterInfo.Instance.chosenFriendCharacter;
 
@@ -42,33 +45,48 @@ public class GameManager : SingletonBehaviour<GameManager>
         flowchart.SetStringVariable("playerGender", playerGender);
         flowchart.SetStringVariable("friendGender", friendGender);
 
-        switch(chosenCharacterPlayer) {
+        switch(chosenCharacterStart) {
             case "PJohn":
-                player.GetComponent<Character>().portraits = johnPortraits;
+                start.GetComponent<Character>().portraits = sJohnPortraits;
                 break;
             case "PSherlock":
-                player.GetComponent<Character>().portraits = sherlockPortraits;
+                start.GetComponent<Character>().portraits = sSherlockPortraits;
                 break;
             case "PJoanne":
-                player.GetComponent<Character>().portraits = joannePortraits;
+                start.GetComponent<Character>().portraits = sJoannePortraits;
                 break;
             case "PSherley":
-                player.GetComponent<Character>().portraits = sherleyPortraits;
+                start.GetComponent<Character>().portraits = sSherleyPortraits;
+                break;
+        }
+
+        switch(chosenCharacterPlayer) {
+            case "PJohn":
+                player.GetComponent<Character>().portraits = pJohnPortraits;
+                break;
+            case "PSherlock":
+                player.GetComponent<Character>().portraits = pSherlockPortraits;
+                break;
+            case "PJoanne":
+                player.GetComponent<Character>().portraits = pJoannePortraits;
+                break;
+            case "PSherley":
+                player.GetComponent<Character>().portraits = pSherleyPortraits;
                 break;
         }
 
         switch(chosenCharacterFriend) {
-            case "PJohn":
-                friend.GetComponent<Character>().portraits = johnPortraits;
+            case "FJohn":
+                friend.GetComponent<Character>().portraits = fJohnPortraits;
                 break;
-            case "PSherlock":
-                friend.GetComponent<Character>().portraits = sherlockPortraits;
+            case "FSherlock":
+                friend.GetComponent<Character>().portraits = fSherlockPortraits;
                 break;
-            case "PJoanne":
-                friend.GetComponent<Character>().portraits = joannePortraits;
+            case "FJoanne":
+                friend.GetComponent<Character>().portraits = fJoannePortraits;
                 break;
-            case "PSherley":
-                friend.GetComponent<Character>().portraits = sherleyPortraits;
+            case "FSherley":
+                friend.GetComponent<Character>().portraits = fSherleyPortraits;
                 break;
         }
     }
@@ -87,14 +105,14 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void ChangePlayerState() {
         playerNum++;
         if(playerNum <= playerStates.Count) {
-            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+            //background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
         }
     }
 
     public void ChangeFriendState() {
         friendNum++;
         if(friendNum <= friendStates.Count) {
-            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+            //background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
         }
     }
 
