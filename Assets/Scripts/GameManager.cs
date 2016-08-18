@@ -6,6 +6,7 @@ using Fungus;
 public class GameManager : SingletonBehaviour<GameManager>
 {
     public Flowchart flowchart;
+    public Light lightIntensity;
 
     public int bgNum = 0;
     public List<Material> bgMats;
@@ -25,10 +26,9 @@ public class GameManager : SingletonBehaviour<GameManager>
     public List<Sprite> sJohnPortraits, sSherlockPortraits, sJoannePortraits, sSherleyPortraits;
     public List<Sprite> pJohnPortraits, pSherlockPortraits, pJoannePortraits, pSherleyPortraits;
     public List<Sprite> fJohnPortraits, fSherlockPortraits, fJoannePortraits, fSherleyPortraits;
+    
 
-    // Use this for initialization
     void Start() {
-        ChangeBackground();
 
         playerName = CharacterInfo.Instance.chosenPlayerName;
         friendName = CharacterInfo.Instance.chosenFriendName;
@@ -38,12 +38,15 @@ public class GameManager : SingletonBehaviour<GameManager>
         chosenCharacterFriend = CharacterInfo.Instance.chosenFriendCharacter;
 
         playerGender = (chosenCharacterPlayer == "PJohn" || chosenCharacterPlayer == "PSherlock") ? "Male" : "Female";
-        friendGender = (chosenCharacterFriend == "FJoanne" || chosenCharacterPlayer == "FSherley") ? "Female" : "Male";
+        friendGender = (chosenCharacterFriend == "FJoanne" || chosenCharacterFriend == "FSherley") ? "Female" : "Male";
 
         flowchart.SetStringVariable("playerName", playerName);
         flowchart.SetStringVariable("friendName", friendName);
         flowchart.SetStringVariable("playerGender", playerGender);
         flowchart.SetStringVariable("friendGender", friendGender);
+
+        player.GetComponent<Character>().name = playerName;
+        friend.GetComponent<Character>().name = friendName;
 
         switch(chosenCharacterStart) {
             case "PJohn":
@@ -90,9 +93,9 @@ public class GameManager : SingletonBehaviour<GameManager>
                 break;
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+
+    void Update() {
 
         //Change scenes
         if(flowchart.GetBooleanVariable("bgChange") == true) {
@@ -100,27 +103,14 @@ public class GameManager : SingletonBehaviour<GameManager>
             ChangeBackground();
         }
 
+        if(lightIntensity.intensity == 0 && flowchart.GetBooleanVariable("changeLightIntensity") == true)
+            lightIntensity.intensity = 3;
+
 	}
-
-    public void ChangePlayerState() {
-        playerNum++;
-        if(playerNum <= playerStates.Count) {
-            //background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
-        }
-    }
-
-    public void ChangeFriendState() {
-        friendNum++;
-        if(friendNum <= friendStates.Count) {
-            //background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
-        }
-    }
 
     public void ChangeBackground() {
         bgNum++;
-        if(bgNum <= bgMats.Count) {
+        if(bgNum <= bgMats.Count)
             background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
-        }
-
     }
 }
