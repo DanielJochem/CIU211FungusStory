@@ -11,6 +11,9 @@ public class GameManager : SingletonBehaviour<GameManager>
     public int bgNum = 0;
     public List<Material> bgMats;
 
+    public int startNum = 0;
+    public List<Sprite> startStates;
+
     public int playerNum = 0;
     public List<Sprite> playerStates;
 
@@ -19,7 +22,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public GameObject background;
 
-    public string playerName = "PLAYER", friendName = "FRIEND", chosenCharacterStart = "PSherley", chosenCharacterPlayer = "PSherley", chosenCharacterFriend = "FSherlock", playerGender = "Female", friendGender = "Male";
+    public string playerName = "PLAYER", friendName = "FRIEND", chosenCharacterStart = "PSherlock", chosenCharacterPlayer = "PSherlock", chosenCharacterFriend = "FSherley", playerGender = "Male", friendGender = "Female";
 
     public GameObject start, player, friend;
 
@@ -29,7 +32,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     
 
     void Start() {
-
         playerName = CharacterInfo.Instance.chosenPlayerName;
         friendName = CharacterInfo.Instance.chosenFriendName;
 
@@ -42,8 +44,16 @@ public class GameManager : SingletonBehaviour<GameManager>
 
         flowchart.SetStringVariable("playerName", playerName);
         flowchart.SetStringVariable("friendName", friendName);
-        flowchart.SetStringVariable("playerGender", playerGender);
-        flowchart.SetStringVariable("friendGender", friendGender);
+
+        flowchart.SetStringVariable("playerHeShe", playerGender == "Male" ? "he" : "she");
+        flowchart.SetStringVariable("playerHimHer", playerGender == "Male" ? "him" : "her");
+        flowchart.SetStringVariable("playerHisHer", playerGender == "Male" ? "his" : "her");
+        flowchart.SetStringVariable("playerBroGirl", playerGender == "Male" ? "bro" : "girl");
+
+        flowchart.SetStringVariable("friendHeShe", friendGender == "Female" ? "she" : "he");
+        flowchart.SetStringVariable("friendHimHer", friendGender == "Female" ? "her" : "him");
+        flowchart.SetStringVariable("friendHisHer", friendGender == "Female" ? "her" : "his");
+        flowchart.SetStringVariable("friendBroGirl", friendGender == "Female" ? "girl" : "bro");
 
         player.GetComponent<Character>().name = playerName;
         friend.GetComponent<Character>().name = friendName;
@@ -92,6 +102,10 @@ public class GameManager : SingletonBehaviour<GameManager>
                 friend.GetComponent<Character>().portraits = fSherleyPortraits;
                 break;
         }
+
+        start.GetComponent<Character>().profileSprite = startStates[0];
+        player.GetComponent<Character>().profileSprite = playerStates[0];
+        friend.GetComponent<Character>().profileSprite = friendStates[0];
     }
 
 
@@ -106,9 +120,39 @@ public class GameManager : SingletonBehaviour<GameManager>
         if(lightIntensity.intensity == 0 && flowchart.GetBooleanVariable("changeLightIntensity") == true)
             lightIntensity.intensity = 3;
 
+        if(flowchart.GetBooleanVariable("prostheticChosen") == true) {
+            flowchart.SetBooleanVariable("prostheticChosen", false);
+            if(flowchart.GetStringVariable("prosthetic") == "hand" || flowchart.GetStringVariable("prosthetic") == "leg") {
+                flowchart.SetStringVariable("wasWere", "was");
+                flowchart.SetStringVariable("itThey", "it");
+                flowchart.SetStringVariable("isAre", "is");
+            } else {
+                flowchart.SetStringVariable("wasWere", "were");
+                flowchart.SetStringVariable("itThey", "they");
+                flowchart.SetStringVariable("isAre", "are");
+            }
+        }
 	}
 
     public void ChangeBackground() {
+        bgNum++;
+        if(bgNum <= bgMats.Count)
+            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+    }
+
+    public void ChangeStart() {
+        bgNum++;
+        if(bgNum <= bgMats.Count)
+            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+    }
+
+    public void ChangePlayer() {
+        bgNum++;
+        if(bgNum <= bgMats.Count)
+            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+    }
+
+    public void ChangeFriend() {
         bgNum++;
         if(bgNum <= bgMats.Count)
             background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
