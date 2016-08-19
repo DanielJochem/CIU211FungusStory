@@ -13,69 +13,85 @@ using System.Collections.Generic;
 namespace Fungus
 {
 
-	[ExecuteInEditMode]
-	public class Stage : PortraitController
-	{
-		public Canvas portraitCanvas;
-		public bool dimPortraits;
-		public float fadeDuration = 0.5f;
-		public float moveDuration = 1f;
-		public LeanTweenType fadeEaseType;
-		public LeanTweenType moveEaseType;
-		public Vector2 shiftOffset;
-		public Image defaultPosition;
-		public List<RectTransform> positions;
-		public List<Character> charactersOnStage = new List<Character>();
+    [ExecuteInEditMode]
+    public class Stage : PortraitController
+    {
+        public Canvas portraitCanvas;
+        public bool dimPortraits;
+        public float fadeDuration = 0.5f;
+        public float moveDuration = 1f;
+        public LeanTweenType fadeEaseType;
+        public LeanTweenType moveEaseType;
+        public Vector2 shiftOffset;
+        public Image defaultPosition;
+        public List<RectTransform> positions;
+        public RectTransform[] cachedPositions;
+        public List<Character> charactersOnStage = new List<Character>();
 
-		[HideInInspector]
-		static public List<Stage> activeStages = new List<Stage>();
+        [HideInInspector]
+        static public List<Stage> activeStages = new List<Stage>();
 
         protected virtual void OnEnable()
-		{
-			if (!activeStages.Contains(this))
-			{
-				activeStages.Add(this);
-			}
-		}
+        {
+            if (!activeStages.Contains(this))
+            {
+                activeStages.Add(this);
+            }
+        }
 
-		protected virtual void OnDisable()
-		{
-			activeStages.Remove(this);
-		}
+        public void CachePositions()
+        {
+            cachedPositions = new RectTransform[positions.Count];
+            positions.CopyTo(cachedPositions);
+        }
 
-		protected virtual void Start()
-		{
-			if (Application.isPlaying &&
-			    portraitCanvas != null)
-			{
-				// Ensure the stage canvas is active
-				portraitCanvas.gameObject.SetActive(true);
-			}
-		}
+        protected virtual void OnDisable()
+        {
+            activeStages.Remove(this);
+        }
 
-		/// <summary>
-		/// Searches the stage's named positions
-		/// If none matches the string provided, give a warning and return a new RectTransform
-		/// </summary>
-		/// <param name="position_string">Position name to search for</param>
-		/// <returns></returns>
+        protected virtual void Start()
+        {
+            if (Application.isPlaying &&
+                portraitCanvas != null)
+            {
+                // Ensure the stage canvas is active
+                portraitCanvas.gameObject.SetActive(true);
+            }
+        }
+
+        /// <summary>
+        /// Searches the stage's named positions
+        /// If none matches the string provided, give a warning and return a new RectTransform
+        /// </summary>
+        /// <param name="position_string">Position name to search for</param>
+        /// <returns></returns>
         public RectTransform GetPosition(String position_string)
         {
-            if (position_string == null)
+            if (string.IsNullOrEmpty(position_string))
             {
-                Debug.LogWarning("Missing stage position.");
-                return new RectTransform();
+                return null;
             }
 
-            foreach (RectTransform position in positions)
+            for (int i = 0; i < cachedPositions.Length; i++)
             {
-                if ( String.Compare(position.name, position_string, true) == 0 )
+                if ( String.Compare(cachedPositions[i].name, position_string, true) == 0 )
                 {
-                    return position;
+                    return cachedPositions[i];
                 }
             }
-            Debug.LogWarning("Unidentified stage position: " + position_string);
-            return new RectTransform();
+            return null;
+        }
+
+        public static Stage GetActiveStage()
+        {
+            if (Stage.activeStages == null ||
+                Stage.activeStages.Count == 0)
+            {
+                return null;
+            }
+
+            return Stage.activeStages[0];
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Fungus;
@@ -102,10 +103,6 @@ public class GameManager : SingletonBehaviour<GameManager>
                 friend.GetComponent<Character>().portraits = fSherleyPortraits;
                 break;
         }
-
-        start.GetComponent<Character>().profileSprite = startStates[0];
-        player.GetComponent<Character>().profileSprite = playerStates[0];
-        friend.GetComponent<Character>().profileSprite = friendStates[0];
     }
 
 
@@ -140,21 +137,8 @@ public class GameManager : SingletonBehaviour<GameManager>
             background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
     }
 
-    public void ChangeStart() {
-        bgNum++;
-        if(bgNum <= bgMats.Count)
-            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
-    }
-
-    public void ChangePlayer() {
-        bgNum++;
-        if(bgNum <= bgMats.Count)
-            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
-    }
-
-    public void ChangeFriend() {
-        bgNum++;
-        if(bgNum <= bgMats.Count)
-            background.GetComponent<MeshRenderer>().material = bgMats[bgNum];
+    public void ChosenAccident(Button choice) {
+        flowchart.SetStringVariable("prosthetic", choice.name);
+        Fungus.Flowchart.BroadcastFungusMessage("Scene 5 Begin");
     }
 }
