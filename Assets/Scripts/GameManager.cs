@@ -56,8 +56,8 @@ public class GameManager : SingletonBehaviour<GameManager>
         flowchart.SetStringVariable("friendHisHer", friendGender == "Female" ? "her" : "his");
         flowchart.SetStringVariable("friendBroGirl", friendGender == "Female" ? "girl" : "bro");
 
-        player.GetComponent<Character>().name = playerName;
-        friend.GetComponent<Character>().name = friendName;
+        player.GetComponent<Character>().nameText = playerName;
+        friend.GetComponent<Character>().nameText = friendName;
 
         switch(chosenCharacterStart) {
             case "PJohn":
@@ -140,5 +140,10 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void ChosenAccident(Button choice) {
         flowchart.SetStringVariable("prosthetic", choice.name);
         Fungus.Flowchart.BroadcastFungusMessage("Scene 5 Begin");
+    }
+
+    public void ChosenProcedureLocation(Button choice) {
+        flowchart.SetStringVariable("procedureLocation", choice.name);
+        Fungus.Flowchart.BroadcastFungusMessage("Scene 8 Begin");
     }
 }
