@@ -117,17 +117,14 @@ public class GameManager : SingletonBehaviour<GameManager>
         if(lightIntensity.intensity == 0 && flowchart.GetBooleanVariable("changeLightIntensity") == true)
             lightIntensity.intensity = 3;
 
-        if(flowchart.GetBooleanVariable("prostheticChosen") == true) {
-            flowchart.SetBooleanVariable("prostheticChosen", false);
-            if(flowchart.GetStringVariable("prosthetic") == "hand" || flowchart.GetStringVariable("prosthetic") == "leg") {
-                flowchart.SetStringVariable("wasWere", "was");
-                flowchart.SetStringVariable("itThey", "it");
-                flowchart.SetStringVariable("isAre", "is");
-            } else {
-                flowchart.SetStringVariable("wasWere", "were");
-                flowchart.SetStringVariable("itThey", "they");
-                flowchart.SetStringVariable("isAre", "are");
-            }
+        if(flowchart.GetStringVariable("prosthetic") == "hand" || flowchart.GetStringVariable("prosthetic") == "leg") {
+            flowchart.SetStringVariable("wasWere", "was");
+            flowchart.SetStringVariable("itThey", "it");
+            flowchart.SetStringVariable("isAre", "is");
+        } else {
+            flowchart.SetStringVariable("wasWere", "were");
+            flowchart.SetStringVariable("itThey", "they");
+            flowchart.SetStringVariable("isAre", "are");
         }
 	}
 
