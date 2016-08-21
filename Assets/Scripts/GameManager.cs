@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Fungus;
 
 public class GameManager : SingletonBehaviour<GameManager>
@@ -126,7 +127,7 @@ public class GameManager : SingletonBehaviour<GameManager>
             flowchart.SetStringVariable("itThey", "they");
             flowchart.SetStringVariable("isAre", "are");
         }
-	}
+    }
 
     public void ChangeBackground() {
         bgNum++;
@@ -142,5 +143,18 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void ChosenProcedureLocation(Button choice) {
         flowchart.SetStringVariable("procedureLocation", choice.name);
         Fungus.Flowchart.BroadcastFungusMessage("Scene 8 Begin");
+    }
+
+    public void ToFuture() {
+        Fungus.Flowchart.BroadcastFungusMessage("End Scene");
+    }
+
+    public void ToFin() {
+        Fungus.Flowchart.BroadcastFungusMessage("Fin.");
+        //System.Diagnostics.Process.Start("cmd.exe /c C:\\Users\\%USERNAME%\\Desktop\\TEST\\test.bat");
+    }
+
+    public void QuitGame() {
+        Application.Quit();
     }
 }
